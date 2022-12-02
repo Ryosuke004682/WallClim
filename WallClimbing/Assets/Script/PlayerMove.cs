@@ -8,6 +8,13 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float _moveSpeed = 4.0f;
+
+    RaycastHit _hit;
+    Ray _ray;
+
+    [Header("壁登りのセッティング")]
+    float rayDistance = 0.5f;
+
     Rigidbody rb;
 
     private void Start()
@@ -23,14 +30,11 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        WallCheck();
     }
 
     void Move()
     {
-        //WASDで動かしたい
-        //float型で定義できないから。。。。
-
         var horizontal = Input.GetAxisRaw("Horizontal");
         var vertical = Input.GetAxisRaw("Vertical");
 
@@ -38,28 +42,22 @@ public class PlayerMove : MonoBehaviour
 
         rb.velocity = velocity * _moveSpeed;
 
-        if(Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.W))
-        {
-            rb.velocity *= vertical * 10 ;
-            Debug.Log("押されたよ");
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.A))
-        {
-            rb.velocity *= -horizontal * 10;
-            Debug.Log("押されたよ");
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.S))
-        {
-            rb.velocity *= -vertical * 10;
-            Debug.Log("押されたよ");
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.D))
-        {
-            rb.velocity *= horizontal * 10;
-            Debug.Log("押されたよ");
-        }
-
         Debug.Log(rb.velocity);
-        
+    }
+
+    /// <summary>
+    /// 壁と接しているかどうかのチェック
+    /// </summary>
+    void WallCheck()
+    {
+        _ray = new Ray(transform.position,transform.forward * rayDistance);
+
+        if (Physics.Raycast(_ray , out _hit , rayDistance) )
+        {
+            if (_hit.collider.CompareTag("Wall"))
+            {
+                Debug.Log("壁");
+            }
+        }
     }
 }
