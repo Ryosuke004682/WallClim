@@ -9,8 +9,14 @@ public class PlayerMove : MonoBehaviour
 {
     [Header("プレイヤーの詳細設定")]
     public float _moveSpeed = 4.0f;
-    public float gravityPower = -5.0f;
-    Rigidbody rb;
+
+
+
+    [Header("プレイヤーにかかる重力の設定")]
+    public float gravityPower = 5.0f;
+    Vector3 localGravity = Vector3.down;
+
+
 
     [Header("壁登りのセッティング")]
     public string wallName = "Wall";
@@ -18,9 +24,12 @@ public class PlayerMove : MonoBehaviour
     public float climeSpeed = 1.5f;
     bool Climbing = false;
 
+    bool groundCheck;
+
     RaycastHit _hit;
     Ray _ray;
 
+    Rigidbody rb;
 
     private void Start()
     {
@@ -42,8 +51,6 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
-        WallClim();
-
         var horizontal = Input.GetAxisRaw("Horizontal");
         var vertical = Input.GetAxisRaw("Vertical");
 
@@ -54,31 +61,33 @@ public class PlayerMove : MonoBehaviour
 
         // != nullしてるのは、wallNameだけだと、wallNameが見つかるまでNullが出るため。
         //とりあえず当たっていればNullは出ないから書いた。
+       
         if(_hit.collider != null && _hit.collider.CompareTag(wallName))
         {
-
             Climbing = true;
             velocity = new Vector3(horizontal ,vertical , 0);
             rb.velocity = velocity * climeSpeed ;
+
+            Debug.Log(Climbing);
         }
         else
         {
-            transform.position = new Vector3(horizontal,vertical,0);
             Climbing = false;
             velocity = new Vector3(horizontal, 0, vertical).normalized;
             rb.velocity = velocity * _moveSpeed;
+            Debug.Log(Climbing);
         }
     }
     /// <summary>
     /// 壁登り
     /// </summary>
-    void WallClim()
+    public void WallClim()
     {
         _ray = new Ray(transform.position, transform.forward * rayDistance);
 
         if (Physics.Raycast(_ray, out _hit, rayDistance))
         {
-            if (_hit.collider.name ==wallName)
+            if (_hit.collider.CompareTag(wallName))
             {
                 rb.useGravity = false;
                 Debug.Log("I'm on the wall.");
@@ -86,12 +95,26 @@ public class PlayerMove : MonoBehaviour
             else
             {
                 rb.useGravity = true;
-                
-
                 Debug.Log("I'm off the wall.");
             }
         }
-
-        Move();
     }
+
+    /// <summary>
+    /// 重力を計算する。
+    /// </summary>
+    void FallAcceleration()
+    {
+        
+    }
+
+    /// <summary>
+    /// 地面の当たり判定
+    /// </summary>
+    /// <param name="ground"></param>
+    private void OnTriggerEnter(Collider ground)
+    {
+        
+    }
+
 }
