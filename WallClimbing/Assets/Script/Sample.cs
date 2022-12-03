@@ -7,26 +7,29 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Sample : MonoBehaviour
 {
+    //問題1　:　上まで行っても登り切れない
+    //問題2　:　一度触ったら離れない（戻れない）
+
+    //レイを二本飛ばす
+    //1本目、頭の上から前方斜めにレイを飛ばしてみる。（レイが上まで行くと壁の判定が無くなって、替わりにレイが地面につく。
+    //そのポジションを取得して、瞬間移動）
+
     [Header("プレイヤーの詳細設定")]
 
     public float _moveSpeed = 4.0f;
   
     [Header("プレイヤーにかかる重力の設定")]
     public float gravityPower = 5.0f;
-    Vector3 localGravity = Vector3.down;
-
+    Vector3 localGravity = Vector3.down;　//未実装
 
 
     [Header("壁登りのセッティング")]
     public string wallName = "Wall";
-    const float rayDistance = 0.5f;
+    const float rayDistance = 1.0f;
     public float climeSpeed = 1.5f;
     bool Climbing = false;
 
-    bool groundCheck;
-
-    Vector3 gravity = Vector3.down;
-
+    bool groundCheck;//未実装
 
     RaycastHit _hit;
     Ray _ray;
@@ -53,10 +56,8 @@ public class Sample : MonoBehaviour
     void Move()
     {
         var horizontal = Input.GetAxisRaw("Horizontal");
-
-        var vertical = Input.GetAxisRaw("Vertical");
-
-        var velocity = new Vector3(horizontal, 0, vertical).normalized;
+        var vertical   = Input.GetAxisRaw("Vertical");
+        var velocity   = new Vector3(horizontal, 0, vertical).normalized;
 
         rb.velocity = velocity * _moveSpeed;
         Debug.Log(rb.velocity);
@@ -84,15 +85,16 @@ public class Sample : MonoBehaviour
     /// <summary>
     /// 壁登り
     /// </summary>
+    
+    //今したい事　:　下に降りたら元の移動に戻りたい。
+
     public void WallClim()
     {
+        Vector3 rayPosition = transform.position + Vector3.zero;
+        _ray = new Ray(rayPosition , new Vector3(0,-1,1));
 
-        _ray = new Ray(transform.position, transform.forward * rayDistance);
 
-        var gravity = Physics.gravity;
-
-        _ray = new Ray(transform.position, transform.forward * rayDistance);
-
+        Debug.DrawRay(rayPosition, _ray.direction * rayDistance, Color.red);
 
         if (Physics.Raycast(_ray, out _hit, rayDistance))
         {
@@ -108,6 +110,7 @@ public class Sample : MonoBehaviour
             }
         }
 
+      
     }
 
     /// <summary>
