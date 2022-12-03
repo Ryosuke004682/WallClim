@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 296183638}
   - component: {fileID: 296183637}
   - component: {fileID: 296183636}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -504,8 +504,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296183635}
+<<<<<<< HEAD
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -22.068356, y: 28.873821, z: 2.929102}
+=======
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 10, z: 25}
+>>>>>>> 7a866751b0f940f4633af8dc57170b3884d8a748
   m_LocalScale: {x: 50, y: 20, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -894,8 +899,13 @@ Transform:
   m_LocalScale: {x: 50, y: 20, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
+<<<<<<< HEAD
   m_Father: {fileID: 991824580}
   m_RootOrder: 1
+=======
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+>>>>>>> 7a866751b0f940f4633af8dc57170b3884d8a748
   m_LocalEulerAnglesHint: {x: 0, y: -89.403, z: 0}
 --- !u!1 &867087261
 GameObject:
@@ -933,7 +943,11 @@ MonoBehaviour:
   _moveSpeed: 10
   gravityPower: -5
   wallName: Wall
+<<<<<<< HEAD
   climeSpeed: 1.5
+=======
+  impalseSpeed: 1.5
+>>>>>>> 7a866751b0f940f4633af8dc57170b3884d8a748
 --- !u!136 &867087263
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1006,13 +1020,21 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 867087261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: -0.22, y: 0.78, z: -18}
+=======
+  m_LocalPosition: {x: -0.22, y: 21, z: 20.9}
+>>>>>>> 7a866751b0f940f4633af8dc57170b3884d8a748
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
+<<<<<<< HEAD
   m_RootOrder: 2
+=======
+  m_RootOrder: 5
+>>>>>>> 7a866751b0f940f4633af8dc57170b3884d8a748
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &867087267
 Rigidbody:
