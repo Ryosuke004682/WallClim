@@ -727,10 +727,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa9a9fe368da8f49a2de67f5c08c342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
-  gravityPower: 5
-  wallName: Wall
-  climeSpeed: 2
+  _climeSpeed: 1.5
+  _wallName: Wall
+  _climbing: 0
 --- !u!54 &1590450311
 Rigidbody:
   m_ObjectHideFlags: 0

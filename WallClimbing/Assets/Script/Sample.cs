@@ -7,28 +7,28 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Sample : MonoBehaviour
 {
-    //問題1　:　上まで行っても登り切れない
-    //問題2　:　一度触ったら離れない（戻れない）
+    //問題1　:　一度触ったら離れない（戻れない）
 
     //レイを二本飛ばす
-    //1本目、頭の上から前方斜めにレイを飛ばしてみる。（レイが上まで行くと壁の判定が無くなって、替わりにレイが地面につく。
-    //そのポジションを取得して、瞬間移動）
 
     [Header("プレイヤーの詳細設定")]
-
-    public float _moveSpeed = 4.0f;
+    public const float _moveSpeed = 4.0f;
   
+
     [Header("プレイヤーにかかる重力の設定")]
-    public float gravityPower = 5.0f;
-    Vector3 localGravity = Vector3.down;　//未実装
+    public const float _gravityPower = 5.0f;
+    
+    Vector3 localGravity = Vector3.down;
 
 
     [Header("壁登りのセッティング")]
-    public string wallName = "Wall";
-    const float rayDistance = 1.0f;
-    public float climeSpeed = 1.5f;
-    bool Climbing = false;
+    public const float _rayDistance = 1.0f;
 
+    public float _climeSpeed = 1.5f;
+    public string _wallName = "Wall";
+    public bool _climbing = false;
+
+    
     bool groundCheck;//未実装
 
     RaycastHit _hit;
@@ -45,12 +45,13 @@ public class Sample : MonoBehaviour
 
     private void Update()
     {
-        Move();
+        Move();//Playerの動き全般
     }
 
     private void FixedUpdate()
     {
-        WallClim();
+        WallClim();//壁登り
+        FallAcceleration();//重力計算
     }
 
     void Move()
@@ -63,22 +64,22 @@ public class Sample : MonoBehaviour
         Debug.Log(rb.velocity);
 
         // != nullしてるのは、wallNameだけだと、wallNameが見つかるまでNullが出るため。
-        //とりあえず当たっていればNullは出ないから書いた。
+        //とりあえずレイが何かに当たっていればNullは出ないから書いた。
 
-        if (_hit.collider != null && _hit.collider.CompareTag(wallName))
+        if (_hit.collider != null && _hit.collider.CompareTag(_wallName))
         {
-            Climbing = true;
+            _climbing = true;
             velocity = new Vector3(horizontal, vertical, 0);
-            rb.velocity = velocity * climeSpeed;
+            rb.velocity = velocity * _climeSpeed;
 
-            Debug.Log(Climbing);
+            Debug.Log(_climbing);
         }
         else
         {
-            Climbing = false;
+            _climbing = false;
             velocity = new Vector3(horizontal, 0, vertical).normalized;
             rb.velocity = velocity * _moveSpeed;
-            Debug.Log(Climbing);
+            Debug.Log(_climbing);
         }
     }
 
@@ -94,11 +95,11 @@ public class Sample : MonoBehaviour
         _ray = new Ray(rayPosition , new Vector3(0,-1,1));
 
 
-        Debug.DrawRay(rayPosition, _ray.direction * rayDistance, Color.red);
+        Debug.DrawRay(rayPosition, _ray.direction * _rayDistance, Color.red);
 
-        if (Physics.Raycast(_ray, out _hit, rayDistance))
+        if (Physics.Raycast(_ray, out _hit, _rayDistance))
         {
-            if (_hit.collider.CompareTag(wallName))
+            if (_hit.collider.CompareTag(_wallName))
             {
                 rb.useGravity = false;
                 Debug.Log("I'm on the wall.");
@@ -108,25 +109,18 @@ public class Sample : MonoBehaviour
                 rb.useGravity = true;
                 Debug.Log("I'm off the wall.");
             }
-        }
-
-      
+        } 
     }
 
     /// <summary>
     /// 重力を計算する。
+    /// 接地処理もここに書く
     /// </summary>
     void FallAcceleration()
     {
+        var gravity = localGravity.y * _gravityPower;
 
-    }
-
-    /// <summary>
-    /// 地面の当たり判定
-    /// </summary>
-    /// <param name="ground"></param>
-    private void OnTriggerEnter(Collider ground)
-    {
-
+        rb.AddForce(Physics.gravity * gravity * Time.deltaTime, 
+                                                ForceMode.Impulse);
     }
 }
