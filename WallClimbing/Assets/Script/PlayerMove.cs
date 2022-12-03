@@ -14,8 +14,11 @@ public class PlayerMove : MonoBehaviour
 
     [Header("壁登りのセッティング")]
     public string wallName = "Wall";
-    const float rayDistance   = 0.5f;
-    public float impalseSpeed = 1.5f;
+    const  float rayDistance   = 0.5f;
+    public float climbing = 1.5f;
+    bool clim = false;
+
+    Vector3 gravity = Vector3.down;
 
     RaycastHit _hit;
     Ray _ray;
@@ -46,6 +49,21 @@ public class PlayerMove : MonoBehaviour
         rb.velocity    = velocity * _moveSpeed;
 
         Debug.Log(rb.velocity);
+
+        if(_hit.collider != null && _hit.collider.CompareTag(wallName))
+        {
+            clim = true;
+            velocity = new Vector3(horizontal , vertical , 0);
+            rb.velocity = velocity * climbing;
+        }
+        else
+        {
+            clim = false;
+            velocity = new Vector3(horizontal , 0 , vertical);
+            rb.velocity = velocity * _moveSpeed;
+        }
+
+
     }
 
     /// <summary>
@@ -70,18 +88,12 @@ public class PlayerMove : MonoBehaviour
                 Debug.Log("I'm off the wall.");
             }
         }
+    }
 
-        //壁登り
-        Vector3 firstTransform = Vector3.up * impalseSpeed;
-
-        if (_hit.collider.CompareTag(wallName) && Input.GetKey(KeyCode.LeftShift))
-        {
-            rb.AddForce(firstTransform, ForceMode.Impulse);
-        }
-        else if (_hit.collider.CompareTag(wallName) && Input.GetKey(KeyCode.RightShift))
-        {
-            rb.AddForce(-firstTransform, ForceMode.Impulse);
-        }
+    void Gravity()
+    {
 
     }
+
+
 }
