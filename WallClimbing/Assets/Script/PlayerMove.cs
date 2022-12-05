@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
 
     [Header("壁登りのセッティング")]
     public string wallName = "Wall";
-    const float rayDistance   = 0.5f;
+    const  float rayDistance   = 0.5f;
     public float impalseSpeed = 1.5f;
 
     RaycastHit _hit;
@@ -53,7 +53,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void WallClim()
     {
-         var gravity = Physics.gravity;
+         
 
          _ray = new Ray(transform.position, transform.forward * rayDistance);
 
